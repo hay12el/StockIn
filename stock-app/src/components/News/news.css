@@ -1,0 +1,57 @@
+.newsContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 50%;
+
+}
+
+.news{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: #cccccc98;
+    width: 80%;
+    border-radius: 5px;
+    outline: none;
+    text-decoration: none;
+}
+
+.news > a{
+    outline: none;
+    text-decoration: none;
+    color: black;
+}
+
+.txtN {
+    padding: 5px;
+    outline: none;
+    text-decoration: none;
+    height: 100%;
+    overflow: hidden;
+}
+
+.txtN > h3, h5 {
+    margin: 5px;
+}
+
+.txtN > h3 {
+    overflow: hidden;
+
+}
+
+.contentN{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.contentN > img {
+    height: 100px;
+    width: 100px;
+    border-radius: 5px 0px 0px 5px;
+}
