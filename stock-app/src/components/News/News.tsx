@@ -22,7 +22,7 @@ const News: FC = () => {
   return (
     <div className="newsContainer">
       {News?.map((element: IStory) => (
-        <div className="news">
+        <div className="news" key={element.href}>
           <a href={element.href} target="_blank" rel="noopener noreferrer">
             <div className="contentN">
               <img src={element.img} alt="img" />

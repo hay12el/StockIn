@@ -25,29 +25,31 @@ const StockInfo: FC<props> = ({ stock, setModalShow, setDetailsForModal }) => {
     animationDuration: "0.2s",
   });
 
-  const setModelInfo = (price: number) => {
+  const setModelInfo = (price: number, numOfStocks: number) => {
     setDetailsForModal({
       //@ts-ignore
       stockName: stock.stockName,
       //@ts-ignore
       stockPrice: price,
-      stockCurrentPrice: "100",
+      numOfStocks: numOfStocks,
+      stockCurrentPrice: "100"
     });
     setModalShow(true);
   };
 
   return (
+    // <div>
+    //   <div className="contstock" >
+    //     <div className="lowerS">
+    //       <p>{stock.stockName}</p>
+    //     </div>
+    //     <div className="lowerS">
+    //       <p>{stock.stockName}</p>
+    //       <p>{stock.stockName}</p>
+    //     </div>
+    //   </div>
     <div>
-      <div className="contstock">
-        <div className="lowerS">
-          <p>{stock.stockName}</p>
-        </div>
-        <div className="lowerS">
-          <p>{stock.stockName}</p>
-          <p>{stock.stockName}</p>
-        </div>
-      </div>
-      {/* <div className="clickWithInfo" onClick={() => setOpen(!open)}>
+      <div className="clickWithInfo" onClick={() => setOpen(!open)}>
         <p>{stock.stockName}</p>
       </div>
       <div className="col" style={open ? colStyleClose : colStyleOpen}>
@@ -69,13 +71,13 @@ const StockInfo: FC<props> = ({ stock, setModalShow, setDetailsForModal }) => {
                 <td className="text-left">{pna[0]}</td>
                 <td className="text-left">{pna[1]}$</td>
                 <td className="text-left">
-                  <button onClick={() => setModelInfo(pna[1])}>sell</button>
+                  <button onClick={() => setModelInfo(pna[1], pna[0])}>sell</button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-      </div> */}
+      </div> 
     </div>
   );
 };

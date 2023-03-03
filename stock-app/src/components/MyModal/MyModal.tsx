@@ -5,6 +5,7 @@ export interface ISellStock {
   show: boolean;
   stockName: string | undefined;
   stockPrice: string | undefined;
+  numOfStocks: number ;
   stockCurrentPrice: string;
   onHide: (x: boolean) => void;
 }
@@ -13,25 +14,32 @@ const MyModal: FC<ISellStock> = ({
   show,
   stockName,
   stockPrice,
+  numOfStocks,
   stockCurrentPrice,
   onHide,
 }) => {
-  const ref = useRef<number>(0);
-  const [count, setCount] = useState<number>(0);
+  const ref = useRef<number>(1);
+  const [count, setCount] = useState<number>(1);
 
   const handleIncrement = () => {
-    if (ref.current < 10) {
+    if (ref.current < numOfStocks) {
       ref.current++;
       setCount(count + 1);
     }
   };
 
   const handleDecrement = () => {
-    if (ref.current > 0) {
+    if (ref.current > 1) {
       ref.current--;
       setCount(count - 1);
     }
   };
+
+  const sell = () => {
+    console.log(count);
+    
+    onHide(false)
+  }
 
   return (
     <div className="ModalContainer" style={show ? { display: "flex" } : {}}>
@@ -44,12 +52,12 @@ const MyModal: FC<ISellStock> = ({
         </div>
         <div className="content">
           <div className="contentU">
-            <p>you have bought 10 {stockName} stocks at a price </p>
+            <p>you have bought {numOfStocks} {stockName} stocks at a price </p>
             <p> {stockPrice}$</p>
           </div>
           <div className="counter">
             <button onClick={handleIncrement}>+</button>
-            <div>Count: {count}</div>
+            <div>I Want To Sell <b>{count}</b> Stocks</div>
             <button onClick={handleDecrement}>-</button>
           </div>
         </div>
@@ -74,7 +82,7 @@ const MyModal: FC<ISellStock> = ({
               <span>E</span>
             </span>
           </button>
-          <button className="bottunWithAnim" onClick={() => onHide(false)}>
+          <button className="bottunWithAnim" onClick={sell}>
             <span className="span-mother">
               <span>S</span>
               <span>E</span>

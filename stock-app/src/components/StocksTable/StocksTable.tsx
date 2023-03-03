@@ -28,6 +28,8 @@ const StocksTable: FC = ({}) => {
       );
       setData(res.data.wallet);
       setStocks(res.data.wallet.stocks);
+      console.log(res.data.wallet.stocks);
+      
     };
     getData();
   }, []);
@@ -40,6 +42,8 @@ const StocksTable: FC = ({}) => {
         stockName={detailsForModal?.stockName}
         //@ts-ignore
         stockPrice={detailsForModal?.stockPrice}
+        //@ts-ignore
+        numOfStocks={detailsForModal?.numOfStocks}
         stockCurrentPrice={"100"}
         onHide={() => setModalShow(false)}
       />
