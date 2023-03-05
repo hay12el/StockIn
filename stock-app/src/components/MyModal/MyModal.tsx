@@ -59,8 +59,7 @@ const MyModal: FC<ISellStock> = ({
   };
 
   return (
-    <div className="ModalContainer" style={{ display: "flex" }}>
-    {/* <div className="ModalContainer" style={show ? { display: "flex" } : {}}> */}
+    <div className="ModalContainer" style={show ? { display: "flex" } : {}}>
       <div className="ModalBox">
         <div className="topModel">
           <div className="upx" onClick={() => onHide(false)}>

@@ -19,6 +19,7 @@ const StocksTable: FC = ({}) => {
   const [data, setData] = useState<IWallet | undefined>();
   const [stocks, setStocks] = useState<[] | undefined>();
   const [modalShow, setModalShow] = useState(false);
+  const [modalTableShow, setModalTableShow] = useState(false);
   const [detailsForModal, setDetailsForModal] = useState();
   const [stockForTable, setStockForTable] = useState<IStock | undefined>();
   const [show, setShow] = useState(false);
@@ -40,10 +41,12 @@ const StocksTable: FC = ({}) => {
 
   return (
     <div className="TContainer">
-      <ModalTable 
-        show={modalShow}
+      <ModalTable
+        show={modalTableShow}
         stock={stockForTable}
-        onHide={() => setModalShow(false)}
+        setModalShow={setModalShow}
+        setDetailsForModal={setDetailsForModal}
+        onHide={() => setModalTableShow(false)}
       />
       <MyModal
         show={modalShow}
@@ -71,7 +74,7 @@ const StocksTable: FC = ({}) => {
             <StockInfo
               stock={stock}
               key={stock.stockName}
-              setModalShow={setModalShow}
+              setModalTableShow={setModalTableShow}
               setStockForTable={setStockForTable}
             />
           ))}

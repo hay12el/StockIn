@@ -8,21 +8,24 @@ import { IStock } from "../StockInfo/StockInfo";
 export interface ISellStock {
   show: boolean;
   stock: IStock | undefined;
+  setDetailsForModal: React.Dispatch<React.SetStateAction<undefined>>;
+  setModalShow: (x: boolean) => void;
   onHide: (x: boolean) => void;
 }
 
-const ModalTable: FC<ISellStock> = ({ show, stock, onHide }) => {
-//   const setModelInfo = (price: number, numOfStocks: number) => {
-//     setDetailsForModal({
-//       //@ts-ignore
-//       stockName: stock.stockName,
-//       //@ts-ignore
-//       stockPrice: price,
-//       numOfStocks: numOfStocks,
-//       stockCurrentPrice: stock.stockCurrentPrice,
-//     });
-//     setModalShow(true);
-//   };
+const ModalTable: FC<ISellStock> = ({ show, stock, onHide, setDetailsForModal,setModalShow }) => {
+  const setModelInfo = (price: number, numOfStocks: number) => {
+    setDetailsForModal({
+      //@ts-ignore
+      stockName: stock.stockName,
+      //@ts-ignore
+      stockPrice: price,
+      numOfStocks: numOfStocks,
+      //@ts-ignore
+      stockCurrentPrice: stock.stockCurrentPrice,
+    });
+    setModalShow(true);
+  };
   return (
     <div className="ModalContainer" style={show ? { display: "flex" } : {}}>
       <div className="ModalBox">
@@ -53,8 +56,7 @@ const ModalTable: FC<ISellStock> = ({ show, stock, onHide }) => {
                     <td className="text-left">{pna[0]}</td>
                     <td className="text-left">{pna[1]}$</td>
                     <td className="text-left">
-                      {/* <button onClick={() => setModelInfo(pna[1], pna[0])}> */}
-                      <button>
+                      <button onClick={() => setModelInfo(pna[1], pna[0])}>
                         sell
                       </button>
                     </td>

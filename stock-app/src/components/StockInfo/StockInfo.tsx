@@ -1,7 +1,5 @@
-import { type } from "os";
 import React, { FC, useEffect, useState } from "react";
 import "./StockInfo.css";
-import MyModal from "../MyModal/MyModal";
 
 export interface IStock {
   stockName: string;
@@ -11,36 +9,16 @@ export interface IStock {
 
 type props = {
   stock: IStock;
-  setModalShow: (x: boolean) => void;
+  setModalTableShow: (x: boolean) => void;
   setStockForTable: React.Dispatch<React.SetStateAction<IStock | undefined>>;
 };
 
-const StockInfo: FC<props> = ({ stock, setModalShow, setStockForTable }) => {
-  const [open, setOpen] = useState(true);
-  const [colStyleOpen, setColStyleOpen] = useState({
-    animationName: "open",
-    animationDuration: "0.2s",
-  });
-  const [colStyleClose, setColStyleClose] = useState({
-    animationName: "close",
-    animationDuration: "0.2s",
-  });
+const StockInfo: FC<props> = ({ stock,  setStockForTable, setModalTableShow }) => {
 
-  // const setModelInfo = (price: number, numOfStocks: number) => {
-  //   setDetailsForModal({
-  //     //@ts-ignore
-  //     stockName: stock.stockName,
-  //     //@ts-ignore
-  //     stockPrice: price,
-  //     numOfStocks: numOfStocks,
-  //     stockCurrentPrice: stock.stockCurrentPrice,
-  //   });
-  //   setModalShow(true);
-  // };
 
   const setModel1Info = (stock:IStock) => {
     setStockForTable(stock);
-    setModalShow(true);
+    setModalTableShow(true);
   }
 
   return (
