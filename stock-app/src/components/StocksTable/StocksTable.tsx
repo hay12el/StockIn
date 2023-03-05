@@ -34,7 +34,7 @@ const StocksTable: FC = ({}) => {
         { headers: { token: user.token } }
       );
       setData(res.data.wallet);
-      setStocks(res.data.wallet.stocks);
+      setStocks(res.data.wallet.stocks); 
     };
     getData();
   }, []);
@@ -59,6 +59,7 @@ const StocksTable: FC = ({}) => {
         //@ts-ignore
         stockCurrentPrice={detailsForModal?.stockCurrentPrice}
         onHide={() => setModalShow(false)}
+        setModalTableShow={setModalTableShow}
         setStocks={setStocks}
         setData={setData}
       />
@@ -68,6 +69,7 @@ const StocksTable: FC = ({}) => {
           <h1>{data?.total}$</h1>
         </div>
       </div>
+      <h1>Your stocks:</h1>
       <div className="boughtStocks">
         {stocks?.length &&
           stocks?.map((stock: IStock) => (

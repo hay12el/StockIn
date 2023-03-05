@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import Wallet, { IWallet } from "../models/Wallet";
-import {getStockDataFunc} from '../routers/newsRouter'
+import { getStockDataFunc } from "../routers/newsRouter";
 
 const GetAmountById = async (req: Request, res: Response) => {
   try {
@@ -14,18 +14,21 @@ const GetAmountById = async (req: Request, res: Response) => {
 };
 
 const getStocksById = async (req: Request, res: Response) => {
-  try{
+  try {
     //@ts-ignore
-    const userId:string | null = req.userId;
+    const userId: string | null = req.userId;
 
     const amount: IWallet | null = await Wallet.findOne({ user: userId });
     for (let sym in amount?.stocks) {
       //@ts-ignore
-      amount?.stocks[0].stockCurrentPrice = await getStockDataFunc(amount?.stocks[sym].stockName);
+      amount?.stocks[sym].stockCurrentPrice = await getStockDataFunc(
+        //@ts-ignore
+        amount?.stocks[sym].stockName
+      );
     }
-    
-    res.status(200).send({wallet: amount});
-  }catch(err){
+
+    res.status(200).send({ wallet: amount });
+  } catch (err) {
     res.status(404);
   }
 };
@@ -41,8 +44,7 @@ const addStock = async (req: Request, res: Response) => {
     const amount: IWallet | null = await Wallet.findOne({ user: userId });
     const totalPriceOfStocks = Number(stockPrice) * Number(amounts);
     // @ts-ignore
-    if (totalPriceOfStocks > amount?.total)
-      throw new Error("not enough money")
+    if (totalPriceOfStocks > amount?.total) throw new Error("not enough money");
 
     var newObj = {
       stockName: stockName,
@@ -97,14 +99,13 @@ const addStock = async (req: Request, res: Response) => {
     );
     res.status(200).send(wallet);
   } catch (err) {
-    res.status(404).send({message: err});
+    res.status(404).send({ message: err });
   }
 };
 
 const saleStock = async (req: Request, res: Response) => {
-  const { stockPrice, stockName, amounts } = req.body;
-  
-  let amountsToChange = req.body.amounts;
+  const { stockPrice, stockName, amounts, numOfStocks, stockCurrentPrice } = req.body;
+
   let i = 0;
   try {
     //@ts-ignore
@@ -112,37 +113,25 @@ const saleStock = async (req: Request, res: Response) => {
 
     const wallet: IWallet | null = await Wallet.findOne({ user: userId });
     let tempStocks = wallet?.stocks;
+
     //@ts-ignore
     for (i; i < tempStocks.length; i++) {
       //@ts-ignore
       if (tempStocks[i].stockName == stockName) {
         //@ts-ignore
         for (let j = 0; j < tempStocks[i].priceAndAmount.length; j++) {
-          //@ts-ignore
-          if (tempStocks[i].priceAndAmount[j][0] > amountsToChange) {
+          if (
+            //@ts-ignore
+            tempStocks[i].priceAndAmount[j][0] == numOfStocks &&
+            //@ts-ignore
+            tempStocks[i].priceAndAmount[j][1] == stockPrice
+          ) {
             //@ts-ignore
             tempStocks[i].priceAndAmount[j][0] =
             //@ts-ignore
-              tempStocks[i].priceAndAmount[j][0] - amountsToChange;
+            tempStocks[i].priceAndAmount[j][0] - amounts;
+            //@ts-ignore
             break;
-            //@ts-ignore
-          } else if (tempStocks[i].priceAndAmount[j][0] == amountsToChange) {
-            //@ts-ignore
-            tempStocks[i].priceAndAmount[j][0] = 0;
-            //@ts-ignore
-            tempStocks[i].priceAndAmount[j][1] = 0;
-            //@ts-ignore
-            tempStocks[i].priceAndAmount[j][2] = 0;
-            break;
-          } else {
-            //@ts-ignore
-            amountsToChange = amountsToChange - tempStocks[i].priceAndAmount[j][0];
-            //@ts-ignore
-            tempStocks[i].priceAndAmount[j][0] = 0;
-            //@ts-ignore
-            tempStocks[i].priceAndAmount[j][1] = 0;
-            //@ts-ignore
-            tempStocks[i].priceAndAmount[j][2] = 0;
           }
         }
         break;
@@ -151,13 +140,13 @@ const saleStock = async (req: Request, res: Response) => {
     //@ts-ignore
     let newPriceAndAmout = tempStocks[i].priceAndAmount.filter((s) => s[0] != 0);
 
-    const newWallet = await Wallet.findOneAndUpdate(
+    await Wallet.findOneAndUpdate(
       { user: userId },
       {
         $set: {
           "stocks.$[elemX].priceAndAmount": newPriceAndAmout,
           //@ts-ignore
-          total: wallet?.total + amounts * stockPrice,
+          total: wallet?.total + amounts * stockCurrentPrice,
         },
       },
       {
@@ -173,9 +162,11 @@ const saleStock = async (req: Request, res: Response) => {
       //@ts-ignore
       amount?.stocks[0].stockCurrentPrice = await getStockDataFunc(amount?.stocks[sym].stockName);
     }
-    
+
     res.status(200).send({wallet: amount});
   } catch (err) {
+    console.log(err);
+    
     res.status(404).send(err);
   }
 };

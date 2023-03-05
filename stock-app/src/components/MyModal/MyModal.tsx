@@ -12,6 +12,7 @@ export interface ISellStock {
   stockCurrentPrice: string;
   setStocks: React.Dispatch<React.SetStateAction<[] | undefined>>;
   setData:  React.Dispatch<React.SetStateAction<IWallet | undefined>>;
+  setModalTableShow:  React.Dispatch<React.SetStateAction<boolean>>;
   onHide: (x: boolean) => void;
 }
 
@@ -23,6 +24,7 @@ const MyModal: FC<ISellStock> = ({
   stockCurrentPrice,
   setStocks,
   setData,
+  setModalTableShow,
   onHide
 }) => {
   const ref = useRef<number>(1);
@@ -46,7 +48,7 @@ const MyModal: FC<ISellStock> = ({
   const sell = async () => {
     const newWallet = await axios.post(
       "http://localhost:4000/wallet/saleStock",
-      { stockName: stockName, amounts: count, stockPrice: stockPrice },
+      { stockName: stockName, amounts: count, stockPrice: stockPrice, numOfStocks: numOfStocks, stockCurrentPrice },
       { headers: { token: user.token } }
     );
     //@ts-ignore
@@ -54,8 +56,9 @@ const MyModal: FC<ISellStock> = ({
     //@ts-ignore
     setStocks(newWallet.data.wallet.stocks);    
     //@ts-ignore
-    // alert(`you make profit of ${(stockCurrentPrice*count) - (stockPrice*count)} dollars`)
+    alert(`you make profit of ${(stockPrice*count) - (stockCurrentPrice*count)} dollars`)
     onHide(false);
+    setModalTableShow(false);
   };
 
   return (
