@@ -44,7 +44,7 @@ const Marquee: FC<MarqueeProps> = ({}) => {
                 <h2>
                   <b>{stock.symbol}</b>
                 </h2>{" "}
-                <h4>{stock.price}</h4>
+                <h4>{parseFloat(stock.price).toFixed(2)}</h4>
               </div>
             );
           })}

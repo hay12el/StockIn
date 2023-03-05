@@ -110,6 +110,26 @@ const getStockData = async (req: Request, res: Response) => {
   }
 };
 
+export const getStockDataFunc = async (sym: string) => {
+  try {
+    if (sym !== null) {
+      const stockArray = await axios.get(
+        `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${sym}&apikey=${process.env.ALPHA}`
+      );
+
+      if (typeof stockArray.data["Global Quote"] !== "undefined") {
+        return stockArray.data["Global Quote"]["05. price"]
+      }
+    }else{
+      return 0;
+
+    }
+  } catch (err) {
+    console.log(err);
+    return 0;
+  }
+}
+
 router.get("/getNews", getNewsData);
 router.get("/getStocksData", getStocksData);
 router.get("/getStockData", getStockData);

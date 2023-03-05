@@ -6,8 +6,9 @@ import axios from "axios";
 import { IStock } from "../StockInfo/StockInfo";
 import MyModal from "../MyModal/MyModal";
 import { ISellStock } from "../MyModal/MyModal";
+import ModalTable from "../ModalTable/ModalTable";
 
-interface IWallet {
+export interface IWallet {
   user: string;
   total?: number;
   stocks?: [];
@@ -19,6 +20,11 @@ const StocksTable: FC = ({}) => {
   const [stocks, setStocks] = useState<[] | undefined>();
   const [modalShow, setModalShow] = useState(false);
   const [detailsForModal, setDetailsForModal] = useState();
+  const [stockForTable, setStockForTable] = useState<IStock | undefined>();
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   useEffect(() => {
     const getData = async () => {
@@ -28,14 +34,17 @@ const StocksTable: FC = ({}) => {
       );
       setData(res.data.wallet);
       setStocks(res.data.wallet.stocks);
-      console.log(res.data.wallet.stocks);
-      
     };
     getData();
   }, []);
 
   return (
     <div className="TContainer">
+      <ModalTable 
+        show={modalShow}
+        stock={stockForTable}
+        onHide={() => setModalShow(false)}
+      />
       <MyModal
         show={modalShow}
         //@ts-ignore
@@ -44,8 +53,11 @@ const StocksTable: FC = ({}) => {
         stockPrice={detailsForModal?.stockPrice}
         //@ts-ignore
         numOfStocks={detailsForModal?.numOfStocks}
-        stockCurrentPrice={"100"}
+        //@ts-ignore
+        stockCurrentPrice={detailsForModal?.stockCurrentPrice}
         onHide={() => setModalShow(false)}
+        setStocks={setStocks}
+        setData={setData}
       />
       <div className="walletSum">
         <div className="totalSum">
@@ -60,7 +72,7 @@ const StocksTable: FC = ({}) => {
               stock={stock}
               key={stock.stockName}
               setModalShow={setModalShow}
-              setDetailsForModal={setDetailsForModal}
+              setStockForTable={setStockForTable}
             />
           ))}
       </div>

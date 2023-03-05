@@ -13,9 +13,10 @@
 .ModalBox {
     position: relative;
     display: flex;
+    padding: 41px 0px;
     flex-direction: column;
     justify-content: center;align-items: center;
-    height: 180px;
+    height: auto;
     background-color: #fff;
     width: 50%;
     border-radius: 5px;
@@ -27,6 +28,8 @@
 .content{
     display: flex;
     flex-direction: column;
+    height: auto;
+    width: 100%;
     gap: 20px;
 }
 
@@ -55,6 +58,10 @@
     width: 100%;
     border-bottom: #d2d2d2 1px solid;
     border-radius: 5px 5px 0px 0px;
+}
+
+.topModel > h1 {
+  padding-left: 10px;
 }
 
 @keyframes up {

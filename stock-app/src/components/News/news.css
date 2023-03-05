@@ -12,7 +12,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     background-color: #cccccc98;
     width: 80%;
     border-radius: 5px;
@@ -46,7 +46,7 @@
 .contentN{
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items:center;
     justify-content: center;
 }
 

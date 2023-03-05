@@ -1,12 +1,17 @@
+import axios from "axios";
 import React, { FC, useRef, useState } from "react";
+import { useAppSelector } from "../../redux/Store";
 import "./MyModal.css";
+import { IWallet } from "../StocksTable/StocksTable";
 
 export interface ISellStock {
   show: boolean;
   stockName: string | undefined;
   stockPrice: string | undefined;
-  numOfStocks: number ;
+  numOfStocks: number;
   stockCurrentPrice: string;
+  setStocks: React.Dispatch<React.SetStateAction<[] | undefined>>;
+  setData:  React.Dispatch<React.SetStateAction<IWallet | undefined>>;
   onHide: (x: boolean) => void;
 }
 
@@ -16,10 +21,13 @@ const MyModal: FC<ISellStock> = ({
   stockPrice,
   numOfStocks,
   stockCurrentPrice,
-  onHide,
+  setStocks,
+  setData,
+  onHide
 }) => {
   const ref = useRef<number>(1);
   const [count, setCount] = useState<number>(1);
+  const user = useAppSelector((state) => state.user);
 
   const handleIncrement = () => {
     if (ref.current < numOfStocks) {
@@ -35,14 +43,24 @@ const MyModal: FC<ISellStock> = ({
     }
   };
 
-  const sell = () => {
-    console.log(count);
-    
-    onHide(false)
-  }
+  const sell = async () => {
+    const newWallet = await axios.post(
+      "http://localhost:4000/wallet/saleStock",
+      { stockName: stockName, amounts: count, stockPrice: stockPrice },
+      { headers: { token: user.token } }
+    );
+    //@ts-ignore
+    setData(newWallet.data.wallet);
+    //@ts-ignore
+    setStocks(newWallet.data.wallet.stocks);    
+    //@ts-ignore
+    // alert(`you make profit of ${(stockCurrentPrice*count) - (stockPrice*count)} dollars`)
+    onHide(false);
+  };
 
   return (
-    <div className="ModalContainer" style={show ? { display: "flex" } : {}}>
+    <div className="ModalContainer" style={{ display: "flex" }}>
+    {/* <div className="ModalContainer" style={show ? { display: "flex" } : {}}> */}
       <div className="ModalBox">
         <div className="topModel">
           <div className="upx" onClick={() => onHide(false)}>
@@ -52,12 +70,19 @@ const MyModal: FC<ISellStock> = ({
         </div>
         <div className="content">
           <div className="contentU">
-            <p>you have bought {numOfStocks} {stockName} stocks at a price </p>
-            <p> {stockPrice}$</p>
+            <p>
+              you have bought {numOfStocks} {stockName} stocks at a price{" "}
+            </p>
+            <p>
+              {" "}
+              {stockPrice}$ current price {stockCurrentPrice}
+            </p>
           </div>
           <div className="counter">
             <button onClick={handleIncrement}>+</button>
-            <div>I Want To Sell <b>{count}</b> Stocks</div>
+            <div>
+              I Want To Sell <b>{count}</b> Stocks
+            </div>
             <button onClick={handleDecrement}>-</button>
           </div>
         </div>

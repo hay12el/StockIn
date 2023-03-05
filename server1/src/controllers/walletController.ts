@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Wallet, { IWallet } from "../models/Wallet";
+import {getStockDataFunc} from '../routers/newsRouter'
 
 const GetAmountById = async (req: Request, res: Response) => {
   try {
@@ -18,6 +19,11 @@ const getStocksById = async (req: Request, res: Response) => {
     const userId:string | null = req.userId;
 
     const amount: IWallet | null = await Wallet.findOne({ user: userId });
+    for (let sym in amount?.stocks) {
+      //@ts-ignore
+      amount?.stocks[0].stockCurrentPrice = await getStockDataFunc(amount?.stocks[sym].stockName);
+    }
+    
     res.status(200).send({wallet: amount});
   }catch(err){
     res.status(404);
@@ -97,6 +103,7 @@ const addStock = async (req: Request, res: Response) => {
 
 const saleStock = async (req: Request, res: Response) => {
   const { stockPrice, stockName, amounts } = req.body;
+  
   let amountsToChange = req.body.amounts;
   let i = 0;
   try {
@@ -146,7 +153,6 @@ const saleStock = async (req: Request, res: Response) => {
 
     const newWallet = await Wallet.findOneAndUpdate(
       { user: userId },
-      //@ts-ignore
       {
         $set: {
           "stocks.$[elemX].priceAndAmount": newPriceAndAmout,
@@ -162,10 +168,13 @@ const saleStock = async (req: Request, res: Response) => {
         ],
       }
     );
-
-    //@ts-ignore
-    res.send(newWallet);
-    // res.sendStatus(200);
+    const amount: IWallet | null = await Wallet.findOne({ user: userId });
+    for (let sym in amount?.stocks) {
+      //@ts-ignore
+      amount?.stocks[0].stockCurrentPrice = await getStockDataFunc(amount?.stocks[sym].stockName);
+    }
+    
+    res.status(200).send({wallet: amount});
   } catch (err) {
     res.status(404).send(err);
   }
