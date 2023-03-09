@@ -56,7 +56,7 @@ const ModalTable: FC<ISellStock> = ({ show, stock, onHide, setDetailsForModal,se
                     <td className="text-left">{pna[0]}</td>
                     <td className="text-left">{pna[1]}$</td>
                     <td className="text-left">
-                      <button onClick={() => setModelInfo(pna[1], pna[0])}>
+                      <button id="sellB" onClick={() => setModelInfo(pna[1], pna[0])}>
                         sell
                       </button>
                     </td>

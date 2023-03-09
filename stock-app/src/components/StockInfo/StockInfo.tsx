@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import "./StockInfo.css";
+import { onlyTwoNums } from "../StocksTable/StocksTable";
 
 export interface IStock {
   stockName: string;
@@ -29,7 +30,7 @@ const StockInfo: FC<props> = ({ stock,  setStockForTable, setModalTableShow }) =
         </div>
         <div className="lowerS">
           <p>{stock.stockName}</p>
-          <p>{stock.stockCurrentPrice}</p>
+          <p>{onlyTwoNums(stock.stockCurrentPrice)}</p>
         </div>
       </div>
     </div>

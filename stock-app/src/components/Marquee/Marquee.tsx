@@ -3,6 +3,7 @@ import "./marquee.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { log } from "console";
+import LittleLoader from "../LittleLoader/LittleLoader";
 
 interface MarqueeProps {}
 
@@ -32,23 +33,27 @@ const Marquee: FC<MarqueeProps> = ({}) => {
 
   return (
     <div className="Marquee">
-      <div className="Marquee-content">
-        {stocks &&
-          stocks.map((stock) => {
-            return (
-              <div
-                className="Marquee-tag"
-                key={stock.symbol}
-                onClick={() => hundleClick(stock.symbol)}
-              >
-                <h2>
-                  <b>{stock.symbol}</b>
-                </h2>{" "}
-                <h4>{parseFloat(stock.price).toFixed(2)}</h4>
-              </div>
-            );
-          })}
-      </div>
+      {stocks ? (
+        <div className="Marquee-content">
+          {stocks &&
+            stocks.map((stock) => {
+              return (
+                <div
+                  className="Marquee-tag"
+                  key={stock.symbol}
+                  onClick={() => hundleClick(stock.symbol)}
+                >
+                  <h2>
+                    <b>{stock.symbol}</b>
+                  </h2>{" "}
+                  <h4>{parseFloat(stock.price).toFixed(2)}</h4>
+                </div>
+              );
+            })}
+        </div>
+      ) : (
+        <LittleLoader />
+      )}
     </div>
   );
 };

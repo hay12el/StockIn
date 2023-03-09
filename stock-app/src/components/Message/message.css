@@ -1,0 +1,103 @@
+.MsgC {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: absolute;
+    opacity: 0;
+}
+
+.MsgC[wobble='1'] {
+    animation-name: displayMessage;
+    animation-duration: 6s;
+}
+
+.msg{
+    color: #0f5132;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    background-color: #d1e7dd;
+    height: 100px;
+    border-radius: 10px 10px 0px 0px;
+    width: 50%;
+}
+
+
+@keyframes displayMessage {
+    0% {bottom: -80px; opacity: 0;}
+    7% {bottom: -80px; opacity: 0;}
+    20% {bottom: 0px;opacity: 1;}
+    90% {bottom: 0px;opacity: 1;}
+    100% {bottom: -80px; opacity: 0;}
+}
+
+@media only screen and (max-width: 600px) {
+    .msg {
+        width: 80% !important;
+    }
+}
+
+.MsgC > .msg > h3 {
+    padding: 0px 30px;
+    margin-bottom: 5px;
+}
+.MsgC > .msg > p {
+    padding: 0px 30px;
+    margin-top: 3px;
+}
+
+@keyframes firework {
+    0% { 
+      transform: translate(0, 5vh);
+      width: 0.5vmin;
+      opacity: 1;
+    }
+    50% { 
+      width: 0.5vmin;
+      opacity: 1;
+    }
+    100% { 
+      width: 45vmin; 
+      opacity: 0; 
+    }
+  }
+  .firework,
+.firework::before,
+.firework::after {
+  --top: 60vh;
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0.5vmin;
+  aspect-ratio: 1;
+  background:
+    /* random backgrounds */
+    radial-gradient(circle, #ff0 0.2vmin, #0000 0) 50% 00%,
+    radial-gradient(circle, #ff0 0.3vmin, #0000 0) 00% 50%,
+    radial-gradient(circle, #ff0 0.5vmin, #0000 0) 50% 99%,
+    radial-gradient(circle, #ff0 0.2vmin, #0000 0) 99% 50%,
+    radial-gradient(circle, #ff0 0.3vmin, #0000 0) 80% 90%,
+    radial-gradient(circle, #ff0 0.5vmin, #0000 0) 95% 90%,
+    radial-gradient(circle, #ff0 0.5vmin, #0000 0) 10% 60%,
+    radial-gradient(circle, #ff0 0.2vmin, #0000 0) 31% 80%,
+    radial-gradient(circle, #ff0 0.3vmin, #0000 0) 80% 10%,
+    radial-gradient(circle, #ff0 0.2vmin, #0000 0) 90% 23%,
+    radial-gradient(circle, #ff0 0.3vmin, #0000 0) 45% 20%,
+    radial-gradient(circle, #ff0 0.5vmin, #0000 0) 13% 24%
+    ;
+  background-size: 0.5vmin 0.5vmin;
+  background-repeat: no-repeat;
+  animation: firework 2s infinite;
+}
+
+.firework::before {
+  transform: translate(-50%, -50%) rotate(25deg) !important; 
+}
+
+.firework::after {
+  transform: translate(-50%, -50%) rotate(-37deg) !important;
+}

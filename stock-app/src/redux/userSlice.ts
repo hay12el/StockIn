@@ -1,13 +1,16 @@
 import { createSlice,PayloadAction } from "@reduxjs/toolkit";
+import {useEffect} from 'react'
 
 export interface user {
   token: string;
   name: string;
+  loading: boolean;
 }
 
 const initialState: user = {
   token: localStorage.getItem("token") || "",
   name: localStorage.getItem("name") || "",
+  loading: false
 };
 
 export const userSlice = createSlice({
@@ -23,9 +26,11 @@ export const userSlice = createSlice({
         state.name= "";
         localStorage.clear();
     },
+    SetLoading: (state, action:PayloadAction<{ loading: boolean}>) => {
+        state.loading=action.payload.loading;
+    }
   },
 });
 
-
 export default userSlice.reducer;
-export const {LOGIN, LOGOUT} = userSlice.actions;
+export const {LOGIN, LOGOUT, SetLoading} = userSlice.actions;

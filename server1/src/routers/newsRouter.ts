@@ -63,9 +63,9 @@ const getStocksData = async (req: Request, res: Response) => {
       res.send({ stocksData: MyCache.get("stocks") });
     } else {
       const x: IStock[] = [];
-      for (let sym in symbols) {
+      for (const sym of symbols) {
         const stockArray = await axios.get(
-          `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbols[sym]}&apikey=${process.env.ALPHA}`
+          `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${sym}&apikey=${process.env.ALPHA}`
         );
 
         if (typeof stockArray.data["Global Quote"] !== "undefined") {
@@ -113,20 +113,12 @@ const getStockData = async (req: Request, res: Response) => {
 export const getStockDataFunc = async (sym: string) => {
   try {
     if (sym !== null) {
-      const stockArray = await axios.get(
+      return await axios.get(
         `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${sym}&apikey=${process.env.ALPHA}`
       );
-
-      if (typeof stockArray.data["Global Quote"] !== "undefined") {
-        return stockArray.data["Global Quote"]["05. price"]
-      }
-    }else{
-      return 0;
-
     }
   } catch (err) {
     console.log(err);
-    return 0;
   }
 }
 

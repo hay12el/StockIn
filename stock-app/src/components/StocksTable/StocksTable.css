@@ -1,5 +1,6 @@
 .TContainer{
     margin-top: 10px;
+    position: relative;
 }
 
 .totalSum{
@@ -23,6 +24,7 @@
 .boughtStocks {
     display: flex;
     margin: 10px 0px;
+    margin-bottom: 0px;
     gap: 15px;
     padding: 15px;
     background-color: #f0f0f0;

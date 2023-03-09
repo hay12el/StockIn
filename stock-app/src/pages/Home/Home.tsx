@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import "./home.css";
 import Marquee from "../../components/Marquee/Marquee";
 import News from "../../components/News/News";
+import Charts from "../../components/Charts/Charts";
 
 const Home: FC = ({}) => {
   return (
@@ -21,7 +22,9 @@ const Home: FC = ({}) => {
       <Marquee />
       <div className="newsSection">
         <News />
-        <div className="graph"></div>
+        <div className="graph">
+          <Charts />
+        </div>
       </div>
     </div>
   );

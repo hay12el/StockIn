@@ -19,14 +19,21 @@ const getStocksById = async (req: Request, res: Response) => {
     const userId: string | null = req.userId;
 
     const amount: IWallet | null = await Wallet.findOne({ user: userId });
-    for (let sym in amount?.stocks) {
-      //@ts-ignore
-      amount?.stocks[sym].stockCurrentPrice = await getStockDataFunc(
+
+    let index = 0;
+    //@ts-ignore
+    for (const item of amount?.stocks) {
+      const data = await getStockDataFunc(
         //@ts-ignore
-        amount?.stocks[sym].stockName
+        item.stockName
       );
+      //@ts-ignore
+      amount?.stocks[index].stockCurrentPrice =
+        data?.data["Global Quote"]["05. price"];
+      index++;
     }
 
+    //@ts-ignore
     res.status(200).send({ wallet: amount });
   } catch (err) {
     res.status(404);
@@ -104,7 +111,8 @@ const addStock = async (req: Request, res: Response) => {
 };
 
 const saleStock = async (req: Request, res: Response) => {
-  const { stockPrice, stockName, amounts, numOfStocks, stockCurrentPrice } = req.body;
+  const { stockPrice, stockName, amounts, numOfStocks, stockCurrentPrice } =
+    req.body;
 
   let i = 0;
   try {
@@ -128,8 +136,8 @@ const saleStock = async (req: Request, res: Response) => {
           ) {
             //@ts-ignore
             tempStocks[i].priceAndAmount[j][0] =
-            //@ts-ignore
-            tempStocks[i].priceAndAmount[j][0] - amounts;
+              //@ts-ignore
+              tempStocks[i].priceAndAmount[j][0] - amounts;
             //@ts-ignore
             break;
           }
@@ -138,7 +146,10 @@ const saleStock = async (req: Request, res: Response) => {
       }
     }
     //@ts-ignore
-    let newPriceAndAmout = tempStocks[i].priceAndAmount.filter((s) => s[0] != 0);
+    let newPriceAndAmout = tempStocks[i].priceAndAmount.filter(
+      //@ts-ignore
+      (s) => s[0] != 0
+    );
 
     await Wallet.findOneAndUpdate(
       { user: userId },
@@ -157,16 +168,24 @@ const saleStock = async (req: Request, res: Response) => {
         ],
       }
     );
-    const amount: IWallet | null = await Wallet.findOne({ user: userId });
-    for (let sym in amount?.stocks) {
-      //@ts-ignore
-      amount?.stocks[0].stockCurrentPrice = await getStockDataFunc(amount?.stocks[sym].stockName);
-    }
 
-    res.status(200).send({wallet: amount});
+    const amount: IWallet | null = await Wallet.findOne({ user: userId });
+    let index = 0;
+    //@ts-ignore
+    for (const item of amount?.stocks) {
+      const data = await getStockDataFunc(
+        //@ts-ignore
+        item.stockName
+      );    
+      //@ts-ignore
+      amount?.stocks[index].stockCurrentPrice =
+        data?.data["Global Quote"]["05. price"];
+      index++;
+    }
+    res.status(200).send({ wallet: amount });
   } catch (err) {
     console.log(err);
-    
+
     res.status(404).send(err);
   }
 };

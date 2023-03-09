@@ -1,8 +1,10 @@
 import axios from "axios";
 import React, { FC, useRef, useState } from "react";
-import { useAppSelector } from "../../redux/Store";
+import { useAppSelector, useAppDispatch } from "../../redux/Store";
 import "./MyModal.css";
 import { IWallet } from "../StocksTable/StocksTable";
+import { SetLoading } from "../../redux/userSlice";
+import { onlyTwoNums } from "../StocksTable/StocksTable";
 
 export interface ISellStock {
   show: boolean;
@@ -11,8 +13,10 @@ export interface ISellStock {
   numOfStocks: number;
   stockCurrentPrice: string;
   setStocks: React.Dispatch<React.SetStateAction<[] | undefined>>;
-  setData:  React.Dispatch<React.SetStateAction<IWallet | undefined>>;
-  setModalTableShow:  React.Dispatch<React.SetStateAction<boolean>>;
+  setData: React.Dispatch<React.SetStateAction<IWallet | undefined>>;
+  setModalTableShow: React.Dispatch<React.SetStateAction<boolean>>;
+  setWobble: React.Dispatch<React.SetStateAction<number>>;
+  setMessage: React.Dispatch<React.SetStateAction<string>>;
   onHide: (x: boolean) => void;
 }
 
@@ -25,40 +29,49 @@ const MyModal: FC<ISellStock> = ({
   setStocks,
   setData,
   setModalTableShow,
-  onHide
+  setWobble,
+  onHide,
+  setMessage,
 }) => {
-  const ref = useRef<number>(1);
   const [count, setCount] = useState<number>(1);
   const user = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
 
-  const handleIncrement = () => {
-    if (ref.current < numOfStocks) {
-      ref.current++;
-      setCount(count + 1);
-    }
-  };
-
-  const handleDecrement = () => {
-    if (ref.current > 1) {
-      ref.current--;
-      setCount(count - 1);
-    }
+  const handleRangeChange = (e: any) => {
+    //@ts-ignore
+    setCount(e.target.value);
   };
 
   const sell = async () => {
-    const newWallet = await axios.post(
-      "http://localhost:4000/wallet/saleStock",
-      { stockName: stockName, amounts: count, stockPrice: stockPrice, numOfStocks: numOfStocks, stockCurrentPrice },
-      { headers: { token: user.token } }
-    );
-    //@ts-ignore
-    setData(newWallet.data.wallet);
-    //@ts-ignore
-    setStocks(newWallet.data.wallet.stocks);    
-    //@ts-ignore
-    alert(`you make profit of ${(stockPrice*count) - (stockCurrentPrice*count)} dollars`)
-    onHide(false);
-    setModalTableShow(false);
+    try {
+      dispatch(SetLoading({ loading: true }));
+      const newWallet = await axios.post(
+        "http://localhost:4000/wallet/saleStock",
+        {
+          stockName: stockName,
+          amounts: count,
+          stockPrice: stockPrice,
+          numOfStocks: numOfStocks,
+          stockCurrentPrice,
+        },
+        { headers: { token: user.token } }
+      );
+      //@ts-ignore
+      setData(newWallet.data.wallet);
+      //@ts-ignore
+      setStocks(newWallet.data.wallet.stocks);
+      onHide(false);
+      setModalTableShow(false);
+      dispatch(SetLoading({ loading: false }));
+      //@ts-ignore
+      setMessage(stockPrice * count - stockCurrentPrice * count);
+      setWobble(1);
+    } catch (err: any) {
+      onHide(false);
+      setModalTableShow(false);
+      dispatch(SetLoading({ loading: false }));
+      console.log(err);
+    }
   };
 
   return (
@@ -74,18 +87,20 @@ const MyModal: FC<ISellStock> = ({
           <div className="contentU">
             <p>
               you have bought {numOfStocks} {stockName} stocks at a price{" "}
-            </p>
-            <p>
-              {" "}
-              {stockPrice}$ current price {stockCurrentPrice}
+              {stockPrice}$ current price {onlyTwoNums(stockCurrentPrice)}$
             </p>
           </div>
           <div className="counter">
-            <button onClick={handleIncrement}>+</button>
             <div>
               I Want To Sell <b>{count}</b> Stocks
             </div>
-            <button onClick={handleDecrement}>-</button>
+
+            <input
+              type={"range"}
+              min={1}
+              max={numOfStocks}
+              onChange={handleRangeChange}
+            />
           </div>
         </div>
         <div className="bottuns">

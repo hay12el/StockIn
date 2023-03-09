@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { FC, useState, useEffect } from "react";
 import "./news.css";
+import LittleLoader from "../LittleLoader/LittleLoader";
 
 interface IStory {
   text?: string;
@@ -21,19 +22,26 @@ const News: FC = () => {
   }, []);
   return (
     <div className="newsContainer">
-      {News?.map((element: IStory) => (
-        <div className="news" key={element.href}>
-          <a href={element.href} target="_blank" rel="noopener noreferrer">
-            <div className="contentN">
-              <img src={element.img} alt="img" />
-              <div className="txtN">
-                <h3>{element.text}</h3>
-                <h5>from Yahoo Finance</h5>
-              </div>
+      {News ? (
+        <div className="contS">
+          <h3>Top Stories</h3>
+          {News?.map((element: IStory) => (
+            <div className="news" key={element.href}>
+              <a href={element.href} target="_blank" rel="noopener noreferrer">
+                <div className="contentN">
+                  <img src={element.img} alt="img" />
+                  <div className="txtN">
+                    <h4>{element.text}</h4>
+                    <h5>from Yahoo Finance</h5>
+                  </div>
+                </div>
+              </a>
             </div>
-          </a>
+          ))}
         </div>
-      ))}
+      ) : (
+        <LittleLoader />
+      )}
     </div>
   );
 };
