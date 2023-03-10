@@ -6,6 +6,7 @@ import LoginSignup from "../pages/LoginSignup/LoginSignup";
 import MyStock from "../pages/MyStocks/MyStock";
 import Stock from "../pages/Stock/Stock";
 import MainPage from "../pages/MainPage/MainPage";
+import SearchAndBuy from "../pages/SearchAndBuy/SearchAndBuy";
 
 const MainRouter: FC = () => {
   return (
@@ -16,6 +17,7 @@ const MainRouter: FC = () => {
           <Route path="/loginsignup/:is" element={<LoginSignup />} />
           <Route path="/MyStock" element={<MyStock />} />
           <Route path="/Stock/:StockId" element={<Stock />} />
+          <Route path="/SearchAndBuy" element={<SearchAndBuy />} />
         </Route>
       </Routes>
     </BrowserRouter>

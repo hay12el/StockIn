@@ -55,7 +55,7 @@ const addStock = async (req: Request, res: Response) => {
 
     var newObj = {
       stockName: stockName,
-      priceAndAmount: [amounts, stockPrice],
+      priceAndAmount: [[amounts, stockPrice, new Date()]],
     };
 
     if (amount?.stocks?.length == 0) {

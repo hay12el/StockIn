@@ -86,6 +86,9 @@
     .graph{
         width: 100%;
     }
+    .newsSection{
+        gap: 20px;
+    }
   }
 
   .newsSection {

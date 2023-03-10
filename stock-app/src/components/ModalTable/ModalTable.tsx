@@ -4,6 +4,7 @@ import { useAppSelector } from "../../redux/Store";
 import "../MyModal/MyModal.css";
 import { IWallet } from "../StocksTable/StocksTable";
 import { IStock } from "../StockInfo/StockInfo";
+import { onlyTwoNums } from "../StocksTable/StocksTable";
 
 export interface ISellStock {
   show: boolean;
@@ -54,7 +55,7 @@ const ModalTable: FC<ISellStock> = ({ show, stock, onHide, setDetailsForModal,se
                       {pna[2].split("T")[1].split(".")[0]}
                     </td>
                     <td className="text-left">{pna[0]}</td>
-                    <td className="text-left">{pna[1]}$</td>
+                    <td className="text-left">{onlyTwoNums(pna[1])}$</td>
                     <td className="text-left">
                       <button id="sellB" onClick={() => setModelInfo(pna[1], pna[0])}>
                         sell

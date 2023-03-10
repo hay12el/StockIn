@@ -30,7 +30,7 @@ const StockInfo: FC<props> = ({ stock,  setStockForTable, setModalTableShow }) =
         </div>
         <div className="lowerS">
           <p>{stock.stockName}</p>
-          <p>{onlyTwoNums(stock.stockCurrentPrice)}</p>
+          <p>{onlyTwoNums(stock.stockCurrentPrice)}$</p>
         </div>
       </div>
     </div>
