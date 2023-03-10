@@ -10,8 +10,6 @@ interface ChartProps {
 }
 
 const LineChart: FC<ChartProps> = ({ chartData }) => {
-  console.log(chartData);
-
   return (
     <div className="chartContainer">
       <Line data={chartData} options={{}} />

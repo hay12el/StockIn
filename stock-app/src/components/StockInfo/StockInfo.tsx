@@ -14,24 +14,24 @@ type props = {
   setStockForTable: React.Dispatch<React.SetStateAction<IStock | undefined>>;
 };
 
-const StockInfo: FC<props> = ({ stock,  setStockForTable, setModalTableShow }) => {
-
-
-  const setModel1Info = (stock:IStock) => {
+const StockInfo: FC<props> = ({
+  stock,
+  setStockForTable,
+  setModalTableShow,
+}) => {
+  const setModel1Info = (stock: IStock) => {
     setStockForTable(stock);
     setModalTableShow(true);
-  }
+  };
 
   return (
-    <div>
-      <div className="contstock" onClick={() => setModel1Info(stock)}>
-        <div className="lowerS">
-          <p>{stock.stockName}</p>
-        </div>
-        <div className="lowerS">
-          <p>{stock.stockName}</p>
-          <p>{onlyTwoNums(stock.stockCurrentPrice)}$</p>
-        </div>
+    <div className="contstock" onClick={() => setModel1Info(stock)}>
+      <div className="lowerS">
+        <p>{stock.stockName}</p>
+      </div>
+      <div className="lowerS">
+        <p>{stock.stockName}</p>
+        <p>{onlyTwoNums(stock.stockCurrentPrice)}$</p>
       </div>
     </div>
   );

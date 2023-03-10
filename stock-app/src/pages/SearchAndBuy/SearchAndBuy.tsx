@@ -13,7 +13,7 @@ interface IResult {
 
 const SearchAndBuy: FC = ({}) => {
   const user = useAppSelector((state) => state.user);
-  const [open, setOpen] = useState(1);
+  const [open, setOpen] = useState(false);
   const [count, setCount] = useState<number>(1);
   const stockName = useRef("");
   const [results, setResults] = useState<IResult>({ price: "", symbol: "" });
@@ -44,7 +44,11 @@ const SearchAndBuy: FC = ({}) => {
       dispatch(SetLoading({ loading: true }));
       const data = await axios.post(
         `http://localhost:${process.env.REACT_APP_URL}/wallet/addStocks`,
-        { stockName: results.symbol, amounts: count, stockPrice: results.price },
+        {
+          stockName: results.symbol,
+          amounts: count,
+          stockPrice: results.price,
+        },
         {
           headers: {
             token: user.token,
@@ -52,7 +56,7 @@ const SearchAndBuy: FC = ({}) => {
         }
       );
       console.log(data.data);
-      
+
       dispatch(SetLoading({ loading: false }));
     } catch (err) {
       dispatch(SetLoading({ loading: false }));
@@ -65,8 +69,7 @@ const SearchAndBuy: FC = ({}) => {
   };
 
   const openDown = () => {
-    open == 1 ? setOpen(0) : setOpen(1);
-    console.log(open);
+    open ? setOpen(false) : setOpen(true);
   };
 
   const handleRangeChange = (e: any) => {
@@ -89,34 +92,50 @@ const SearchAndBuy: FC = ({}) => {
         </button>
       </div>
 
-      {/* @ts-ignore */}
-      <div className="searchResults" open={open} onClick={openDown}>
-        <div className="upBuy">
-          <p>{results.symbol}</p>
-          <p>{onlyTwoNums(results.price)}</p>
-        </div>
+      {results.symbol ? (
+        <div className="searchResults" style={open ? { height: "200px" } : {}}>
+          <div className="uupp">
+            <label htmlFor="check" className="bar">
+              <input id="check" type="checkbox" onClick={openDown} />
 
-        <div className="downTheBuy">
-          <p>
-            i want to <b>{count}</b> buy{" "}
-          </p>
-          <input type={"range"} min={1} max={10} onChange={handleRangeChange} />
-          <div className="btnsec">
-            <button className="bottunWithAnim" onClick={buy}>
-              <span className="span-mother">
-                <span>B</span>
-                <span>U</span>
-                <span>Y</span>
-              </span>
-              <span className="span-mother2">
-                <span>B</span>
-                <span>U</span>
-                <span>Y</span>
-              </span>
-            </button>
+              <span className="top"></span>
+              <span className="middle"></span>
+              <span className="bottom"></span>
+            </label>
+          </div>
+
+          <div className="upBuy">
+            <p>{results.symbol}</p>
+            <p>{onlyTwoNums(results.price)}</p>
+          </div>
+
+          <div className="downTheBuy">
+            <p>
+              i want to buy <b>{count}</b> {results.symbol} stocks
+            </p>
+            <input
+              type={"range"}
+              min={1}
+              max={10}
+              onChange={handleRangeChange}
+            />
+            <div className="btnsec">
+              <button className="bottunWithAnim" onClick={buy}>
+                <span className="span-mother">
+                  <span>B</span>
+                  <span>U</span>
+                  <span>Y</span>
+                </span>
+                <span className="span-mother2">
+                  <span>B</span>
+                  <span>U</span>
+                  <span>Y</span>
+                </span>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      ) : null}
     </div>
   );
 };

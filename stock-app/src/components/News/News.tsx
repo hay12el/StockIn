@@ -24,7 +24,7 @@ const News: FC = () => {
   return (
     <div className="newsContainer">
       {News ? (
-        <>
+        <div className="innerNewsContainer">
           <div className="contS">
             <h3>Top Stories</h3>
             {News?.map((element: IStory) => (
@@ -46,7 +46,7 @@ const News: FC = () => {
             ))}
           </div>
           <Icons />
-        </>
+        </div>
       ) : (
         <LittleLoader />
       )}
