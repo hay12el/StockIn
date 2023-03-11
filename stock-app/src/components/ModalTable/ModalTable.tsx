@@ -23,7 +23,7 @@ const ModalTable: FC<ISellStock> = ({ show, stock, onHide, setDetailsForModal,se
       stockPrice: price,
       numOfStocks: numOfStocks,
       //@ts-ignore
-      stockCurrentPrice: stock.stockCurrentPrice,
+      stockCurrentPrice: stock.stockCurrentPrice.price,
     });
     setModalShow(true);
   };

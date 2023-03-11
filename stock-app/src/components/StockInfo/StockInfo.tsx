@@ -5,7 +5,7 @@ import { onlyTwoNums } from "../StocksTable/StocksTable";
 export interface IStock {
   stockName: string;
   priceAndAmount: number[];
-  stockCurrentPrice: number;
+  stockCurrentPrice: { ratio: string; price: number };
 }
 
 type props = {
@@ -26,12 +26,24 @@ const StockInfo: FC<props> = ({
 
   return (
     <div className="contstock" onClick={() => setModel1Info(stock)}>
-      <div className="lowerS">
+      <div className="lowerSS">
         <p>{stock.stockName}</p>
       </div>
       <div className="lowerS">
-        <p>{stock.stockName}</p>
-        <p>{onlyTwoNums(stock.stockCurrentPrice)}$</p>
+        <div className="ls">
+          {stock.stockCurrentPrice.ratio.charAt(1) === "−" ? (
+            <>
+              <span style={{ color: "red" }}>&#8681;</span>
+              <p style={{ color: "red" }}>{stock.stockCurrentPrice.ratio}</p>
+            </>
+          ) : (
+            <>
+              <span style={{ color: "green" }}>&#8679;</span>
+              <p style={{ color: "green" }}>{stock.stockCurrentPrice.ratio}</p>
+            </>
+          )}
+        </div>
+        <p>{onlyTwoNums(stock.stockCurrentPrice.price)}$</p>
       </div>
     </div>
   );

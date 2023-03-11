@@ -1,6 +1,7 @@
+import { before } from "cheerio/lib/api/manipulation";
 import { Request, Response } from "express";
 import Wallet, { IWallet } from "../models/Wallet";
-import { getStockDataFunc } from "../routers/newsRouter";
+import { getStockDataFunc, getStockDataFuncScrap } from "../routers/newsRouter";
 
 const GetAmountById = async (req: Request, res: Response) => {
   try {
@@ -20,41 +21,15 @@ const getStocksById = async (req: Request, res: Response) => {
 
     const amount: IWallet | null = await Wallet.findOne({ user: userId });
 
-    const stocks = await Promise.all(
-      //@ts-ignore
-      amount?.stocks?.map(async (stock, index) =>
-        getStockDataFunc(
-          //@ts-ignore
-          stock.stockName, amount, index
-        )
-      )
-    );
-
-    console.log(stocks.map((s:any)=> s.data["Global Quote"]["05. price"]));
-    
     let index = 0;
     //@ts-ignore
-    for (const item of amount?.stocks) {
-      
+    for (const stock of amount?.stocks) {
       //@ts-ignore
-      amount?.stocks[index].stockCurrentPrice = stocks[index].data["Global Quote"]["05. price"];
+      const x = await getStockDataFuncScrap(stock.stockName);
+      //@ts-ignore
+      amount?.stocks[index].stockCurrentPrice = x;
       index++;
-      // console.log(index);
     }
-    
-    // for (const item of amount?.stocks) {
-    //   const data = await getStockDataFunc(
-    //     //@ts-ignore
-    //     item.stockName
-    //   );
-    //   //@ts-ignore
-    //   amount?.stocks[index].stockCurrentPrice =
-    //     data?.data["Global Quote"]["05. price"];
-    //   index++;
-    //   console.log(index);
-
-    // }
-    // console.log("finish loop");
 
     //@ts-ignore
     res.status(200).send({ wallet: amount });
@@ -196,14 +171,11 @@ const saleStock = async (req: Request, res: Response) => {
     const amount: IWallet | null = await Wallet.findOne({ user: userId });
     let index = 0;
     //@ts-ignore
-    for (const item of amount?.stocks) {
-      const data = await getStockDataFunc(
-        //@ts-ignore
-        item.stockName
-      );
+    for (const stock of amount?.stocks) {
       //@ts-ignore
-      amount?.stocks[index].stockCurrentPrice =
-        data?.data["Global Quote"]["05. price"];
+      const x = await getStockDataFuncScrap(stock.stockName);
+      //@ts-ignore
+      amount?.stocks[index].stockCurrentPrice = x;
       index++;
     }
     res.status(200).send({ wallet: amount });

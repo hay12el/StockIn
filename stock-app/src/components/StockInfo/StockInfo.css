@@ -14,6 +14,13 @@
     overflow: hidden;
 }
 
+.ls{
+  display: flex;
+  align-items: center;
+  justify-content: baseline;
+  flex-direction: row;
+}
+
 .clickWithInfo {
     margin: 0px 10px 0px 10px;
     border-color:#22262e;
@@ -159,11 +166,24 @@ div.table-title {
   box-shadow: 5px 5px 2px  rgba(161, 161, 161, 0.553);
 }
 
-.lowerS {
+.lowerSS {
   display: flex;
+  font-size: large;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+}
+.lowerS {
+  display: flex;
+  font-size: large;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.lowerSS > p {
+  font-size: large;
+  font-weight: 600;
 }
 
 @media only screen and (max-width: 600px) {
