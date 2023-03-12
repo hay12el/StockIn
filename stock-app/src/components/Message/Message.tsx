@@ -11,8 +11,7 @@ interface MessageProps {
 const Message: FC<MessageProps> = ({ profit, wobble, setWobble }) => {
   return (
     //@ts-ignore
-    <div className="MsgC" wobble={wobble} onAnimationEnd={() => setWobble(0)}>
-      {/* <div className="firework"></div> */}
+    <div className="MsgC" wobble={wobble} onAnimationEnd={() => setWobble(0)}>      
       <div className="msg">
         <h3>Great!</h3>
         <p>{`you made a profit of ${onlyTwoNums(profit)} dollars`}</p>

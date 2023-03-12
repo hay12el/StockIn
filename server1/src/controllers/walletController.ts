@@ -171,7 +171,7 @@ const saleStock = async (req: Request, res: Response) => {
     const amount: IWallet | null = await Wallet.findOne({ user: userId });
     let index = 0;
     //@ts-ignore
-    for (const stock of amount?.stocks) {
+      for (const stock of amount?.stocks) {
       //@ts-ignore
       const x = await getStockDataFuncScrap(stock.stockName);
       //@ts-ignore

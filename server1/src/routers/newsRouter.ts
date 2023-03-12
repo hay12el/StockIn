@@ -137,7 +137,8 @@ export const getStockDataFuncScrap = async (sym: string) => {
 
         const ratio = $("#knowledge-finance-wholepage__entity-summary > div.aviV4d > g-card-section > div > g-card-section > div.wGt0Bc > div.PZPZlf > span.WlRRw.IsqQVc.fw-price-dn > span:nth-child(1)").text()
         
-        // const img = $("#rcnt > div.XqFnDf > div > div > div.HdbW6.MjUjnf.VM6qJ > div.hHq9Z > div > div.gyEfO.JlxBoc > div > div > div > div").find('img').attr('src')
+        const img = $("#rcnt > div.XqFnDf > div > div > div.HdbW6.MjUjnf.VM6qJ > div.hHq9Z > div > div.gyEfO.JlxBoc > div > div > div > div").find('img').attr('src')
+        console.log(img);
         
         resolve({price, ratio});
       }
